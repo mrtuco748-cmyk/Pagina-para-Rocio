@@ -382,6 +382,15 @@ function sendReq(text) {
   handleSend();
 }
 
+const NUMERO = '5493786614189';
+const APIKEY = '6907423';
+
+function notificarWhatsapp(texto) {
+  const mensaje = encodeURIComponent('Rocío te pidió: ' + texto);
+  fetch(`https://api.callmebot.com/whatsapp.php?phone=${NUMERO}&text=${mensaje}&apikey=${APIKEY}`)
+    .catch(() => {});
+}
+
 function handleSend() {
   if (busy) return;
   const input = document.getElementById('chat-input');
@@ -389,7 +398,7 @@ function handleSend() {
   if (!text) return;
   input.value = '';
   addMsg(text, 'user');
-
+  notificarWhatsapp(text);
   setTimeout(() => {
     const action = findAction(text);
     if (action) {
