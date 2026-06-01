@@ -4,7 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
-.btn-oculto {
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #111110;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1rem 2rem;
+    color: #f0ede8;
+  }
+
+  .btn-oculto {
     position: fixed;
     top: 16px;
     left: 16px;
@@ -80,28 +94,6 @@
   }
 
   .poema-cerrar:hover { color: #e8809a; }
- <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Inter', sans-serif;
-    background: #111110;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2.5rem 1rem 2rem;
-    color: #f0ede8;
-   <button class="btn-oculto" onclick="abrirPoema()">.</button>
-
-<div class="poema-overlay" id="poema-overlay" onclick="cerrarPoema(event)">
-  <div class="poema-burbuja">
-    <button class="poema-cerrar" onclick="cerrarPoema()">✕</button>
-    <p class="poema-titulo">ELÍSEO ❤</p>
-    <p class="poema-texto">Como si de algo divino fuera, nuestra relación es ese paraíso donde siempre quiero estar. Me transmite una sensación de alivio, como si no tuviese que preocuparme de ningún problema que tengo, como si todo estuviese resuelto, solo con tu amor puedo llegar a saber como se siente el cielo.<br><br>Nada nunca me hará experimentar lo que contigo siento, pues solo tú haces que me sienta completo, como si estuviera en una utopía donde cada estructura la construiste con todos los sentimientos que tenemos.<br><br>Tú eres esa sensación rozando lo divino.<br><br>No solo es la sensación, todo lo que rodea a nuestra relación me hace amar más a nosotros como pareja.</p>
-  </div>
-</div>
-  }
 
   .titulo {
     font-family: 'Cormorant Garamond', serif;
@@ -341,6 +333,16 @@
 </head>
 <body>
 
+<button class="btn-oculto" onclick="abrirPoema()">.</button>
+
+<div class="poema-overlay" id="poema-overlay" onclick="cerrarPoema(event)">
+  <div class="poema-burbuja">
+    <button class="poema-cerrar" onclick="cerrarPoema()">✕</button>
+    <p class="poema-titulo">ELÍSEO ❤</p>
+    <p class="poema-texto">Como si de algo divino fuera, nuestra relación es ese paraíso donde siempre quiero estar. Me transmite una sensación de alivio, como si no tuviese que preocuparme de ningún problema que tengo, como si todo estuviese resuelto, solo con tu amor puedo llegar a saber como se siente el cielo.<br><br>Nada nunca me hará experimentar lo que contigo siento, pues solo tú haces que me sienta completo, como si estuviera en una utopía donde cada estructura la construiste con todos los sentimientos que tenemos.<br><br>Tú eres esa sensación rozando lo divino.<br><br>No solo es la sensación, todo lo que rodea a nuestra relación me hace amar más a nosotros como pareja.</p>
+  </div>
+</div>
+
 <p class="titulo">Facu a tu servicio</p>
 
 <div class="stage" id="stage">
@@ -391,15 +393,7 @@
     <button onclick="handleSend()">↑</button>
   </div>
 </div>
-function abrirPoema() {
-  document.getElementById('poema-overlay').classList.add('show');
-}
 
-function cerrarPoema(e) {
-  if (!e || e.target === document.getElementById('poema-overlay')) {
-    document.getElementById('poema-overlay').classList.remove('show');
-  }
-}
 <script>
 const actions = [
   {
@@ -446,14 +440,12 @@ function addMsg(text, who) {
   const msgs = document.getElementById('messages');
   const row = document.createElement('div');
   row.className = 'msg-row ' + who;
-
   if (who === 'facu') {
     const img = document.createElement('img');
     img.src = 'FOTO_FACU.jpg';
     img.className = 'msg-avatar';
     row.appendChild(img);
   }
-
   const m = document.createElement('div');
   m.className = 'msg ' + who;
   m.textContent = text;
@@ -523,7 +515,6 @@ function handleSend() {
   input.value = '';
   addMsg(text, 'user');
   notificarWhatsapp(text);
-
   setTimeout(() => {
     const action = findAction(text);
     if (action) {
@@ -534,6 +525,16 @@ function handleSend() {
       unknownIdx++;
     }
   }, 400);
+}
+
+function abrirPoema() {
+  document.getElementById('poema-overlay').classList.add('show');
+}
+
+function cerrarPoema(e) {
+  if (!e || e.target === document.getElementById('poema-overlay')) {
+    document.getElementById('poema-overlay').classList.remove('show');
+  }
 }
 
 document.getElementById('chat-input').addEventListener('keydown', e => {
