@@ -219,19 +219,22 @@
     <p>Facu está esperando</p>
   </div>
 
-  <video id="vid-idle" loop muted autoplay playsinline>
+  <video id="vid-idle" loop muted playsinline>
     <source src="TU_VIDEO_IDLE.mp4" type="video/mp4">
   </video>
-  <video id="vid-bailar" loop playsinline>
+  <video id="vid-cortina" muted playsinline>
+    <source src="cortina.mp4" type="video/mp4">
+  </video>
+  <video id="vid-bailar" muted playsinline>
     <source src="TU_VIDEO_BAILAR.mp4" type="video/mp4">
   </video>
-  <video id="vid-cantar" loop playsinline>
+  <video id="vid-cantar" muted playsinline>
     <source src="TU_VIDEO_CANTAR.mp4" type="video/mp4">
   </video>
-  <video id="vid-reverencia" playsinline>
+  <video id="vid-reverencia" muted playsinline>
     <source src="TU_VIDEO_REVERENCIA.mp4" type="video/mp4">
   </video>
-  <video id="vid-beso" playsinline>
+  <video id="vid-beso" muted playsinline>
     <source src="TU_VIDEO_BESO.mp4" type="video/mp4">
   </video>
 
@@ -293,6 +296,7 @@ const unknownReplies = [
 ];
 
 let unknownIdx = 0;
+let busy = false;
 
 function findAction(text) {
   const t = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
@@ -308,25 +312,58 @@ function addMsg(text, who) {
   msgs.scrollTop = msgs.scrollHeight;
 }
 
-function playVideo(id, label) {
+function showOnly(id) {
   document.querySelectorAll('.stage video').forEach(v => {
     v.classList.remove('active');
     v.pause();
   });
+  document.getElementById('placeholder').style.display = 'none';
   const vid = document.getElementById('vid-' + id);
-  if (vid) {
-    document.getElementById('placeholder').style.display = 'none';
-    vid.classList.add('active');
-    vid.currentTime = 0;
-    vid.play().catch(() => {});
-  }
+  vid.classList.add('active');
+  vid.currentTime = 0;
+  return vid;
+}
+
+function setLabel(text) {
   const lbl = document.getElementById('action-label');
-  lbl.textContent = label;
-  if (label) {
-    lbl.classList.add('show');
-  } else {
-    lbl.classList.remove('show');
-  }
+  lbl.textContent = text;
+  if (text) lbl.classList.add('show');
+  else lbl.classList.remove('show');
+}
+
+// Reproduce un video y devuelve una promesa que se resuelve cuando termina
+function playOnce(id, label) {
+  return new Promise(resolve => {
+    const vid = showOnly(id);
+    setLabel(label);
+    vid.play().catch(() => {});
+    vid.onended = () => {
+      vid.onended = null;
+      resolve();
+    };
+  });
+}
+
+// Secuencia completa: cortina -> accion -> cortina -> idle
+async function playSequence(action) {
+  busy = true;
+
+  // 1. cortina de entrada
+  await playOnce('cortina', '');
+
+  // 2. video de la accion
+  await playOnce(action.id, action.label);
+
+  // 3. cortina de salida
+  await playOnce('cortina', '');
+
+  // 4. volver al idle
+  const idle = showOnly('idle');
+  setLabel('');
+  idle.loop = true;
+  idle.play().catch(() => {});
+
+  busy = false;
 }
 
 function sendReq(text) {
@@ -335,16 +372,18 @@ function sendReq(text) {
 }
 
 function handleSend() {
+  if (busy) return;
   const input = document.getElementById('chat-input');
   const text = input.value.trim();
   if (!text) return;
   input.value = '';
   addMsg(text, 'user');
+
   setTimeout(() => {
     const action = findAction(text);
     if (action) {
-      playVideo(action.id, action.label);
       addMsg(action.reply, 'facu');
+      playSequence(action);
     } else {
       addMsg(unknownReplies[unknownIdx % unknownReplies.length], 'facu');
       unknownIdx++;
@@ -356,7 +395,10 @@ document.getElementById('chat-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') handleSend();
 });
 
-playVideo('idle', '');
+// Arrancar con el idle
+const idle = showOnly('idle');
+idle.loop = true;
+idle.play().catch(() => {});
 </script>
 
 </body>
