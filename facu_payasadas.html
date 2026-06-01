@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Georgia', serif;
+    background: #fafaf8;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 1rem;
+    color: #1a1a1a;
+  }
+
+  h1 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .stage {
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 9/16;
+    max-height: 420px;
+    background: #f0ede8;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #e0dbd4;
+  }
+
+  .stage video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+    border-radius: 20px;
+  }
+
+  .stage video.active {
+    display: block;
+  }
+
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: #bbb;
+  }
+
+  .placeholder-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #e8e4df;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+  }
+
+  .placeholder p {
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+  }
+
+  .action-label {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(6px);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    color: #555;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    display: none;
+    border: 0.5px solid #ddd;
+  }
+
+  .action-label.show { display: block; }
+
+  .chat-box {
+    width: 100%;
+    max-width: 500px;
+    margin-top: 1.5rem;
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid #e8e4de;
+    overflow: hidden;
+  }
+
+  .chat-header {
+    padding: 14px 18px 10px;
+    border-bottom: 0.5px solid #ece8e2;
+  }
+
+  .chat-header p {
+    font-size: 0.85rem;
+    color: #999;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .chat-messages {
+    padding: 12px 16px;
+    min-height: 60px;
+    max-height: 120px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .msg {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    border-radius: 14px;
+    max-width: 80%;
+    line-height: 1.4;
+  }
+
+  .msg.user {
+    background: #1a1a1a;
+    color: #fff;
+    align-self: flex-end;
+    border-radius: 14px 14px 4px 14px;
+  }
+
+  .msg.facu {
+    background: #f0ede8;
+    color: #333;
+    align-self: flex-start;
+    border-radius: 14px 14px 14px 4px;
+  }
+
+  .chat-input-row {
+    display: flex;
+    gap: 8px;
+    padding: 10px 14px 14px;
+    border-top: 0.5px solid #ece8e2;
+  }
+
+  .chat-input-row input {
+    flex: 1;
+    border: 1px solid #e0dbd4;
+    border-radius: 30px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    outline: none;
+    background: #fafaf8;
+    color: #1a1a1a;
+    font-family: inherit;
+  }
+
+  .chat-input-row input::placeholder { color: #bbb; }
+  .chat-input-row input:focus { border-color: #bbb; }
+
+  .chat-input-row button {
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
+  }
+
+  .chat-input-row button:hover { opacity: 0.8; }
+
+  .suggestions {
+    display: flex;
+    gap: 6px;
+    padding: 0 14px 10px;
+    flex-wrap: wrap;
+  }
+
+  .sug {
+    font-size: 0.78rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid #e0dbd4;
+    background: #fafaf8;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .sug:hover { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+
+  .no-video-notice {
+    font-size: 0.78rem;
+    color: #aaa;
+    text-align: center;
+    padding: 4px 0 8px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<h1>Facu a tu servicio</h1>
+
+<div class="stage" id="stage">
+  <div class="placeholder" id="placeholder">
+    <div class="placeholder-circle">🎭</div>
+    <p>Facu está esperando</p>
+  </div>
+
+  <video id="vid-idle" loop muted autoplay playsinline>
+    <source src="TU_VIDEO_IDLE.mp4" type="video/mp4">
+  </video>
+  <video id="vid-bailar" loop playsinline>
+    <source src="TU_VIDEO_BAILAR.mp4" type="video/mp4">
+  </video>
+  <video id="vid-cantar" loop playsinline>
+    <source src="TU_VIDEO_CANTAR.mp4" type="video/mp4">
+  </video>
+  <video id="vid-reverencia" playsinline>
+    <source src="TU_VIDEO_REVERENCIA.mp4" type="video/mp4">
+  </video>
+  <video id="vid-beso" playsinline>
+    <source src="TU_VIDEO_BESO.mp4" type="video/mp4">
+  </video>
+
+  <div class="action-label" id="action-label"></div>
+</div>
+
+<div class="chat-box">
+  <div class="chat-header">
+    <p>Pedile algo a Facu... lo que quieras 👀</p>
+  </div>
+
+  <div class="suggestions" id="suggestions">
+    <span class="sug" onclick="sendReq('bailá')">bailá 💃</span>
+    <span class="sug" onclick="sendReq('cantá')">cantá 🎤</span>
+    <span class="sug" onclick="sendReq('hacé una reverencia')">reverencia 🫡</span>
+    <span class="sug" onclick="sendReq('tirá un beso')">tirá un beso 😘</span>
+  </div>
+
+  <div class="chat-messages" id="messages"></div>
+
+  <p class="no-video-notice" id="video-notice">⚠️ Reemplazá los archivos de video para que funcione</p>
+
+  <div class="chat-input-row">
+    <input id="chat-input" type="text" placeholder="Ej: bailá, cantá, tirá un beso..." />
+    <button onclick="handleSend()">↑</button>
+  </div>
+</div>
+
+<script>
+const actions = [
+  {
+    id: 'bailar',
+    keywords: ['bail','dance','pista','mov','ritmo','cumbia','música','musica'],
+    label: '🕺 bailando...',
+    reply: '¡A mover el esqueleto!'
+  },
+  {
+    id: 'cantar',
+    keywords: ['cant','sing','song','cancion','canción','voz','tema','música','musica','serenata'],
+    label: '🎤 cantando...',
+    reply: '¡Do re mi fa sol la si!'
+  },
+  {
+    id: 'reverencia',
+    keywords: ['reverencia','inclina','bow','incliná','honor','respect','salud'],
+    label: '🫡 haciendo una reverencia...',
+    reply: '¡A sus órdenes, mi señora!'
+  },
+  {
+    id: 'beso',
+    keywords: ['beso','kiss','mwah','amor','corazon','corazón','love','pico'],
+    label: '😘 tirando un beso...',
+    reply: '¡Muak! Con todo mi amor 💕'
+  }
+];
+
+const unknownReplies = [
+  'Mmmm eso no lo sé hacer 😅 ¿probás con bailar o cantar?',
+  '¡Che, eso está fuera de mi repertorio! Intentá con beso o reverencia 😅',
+  'No entendí bien... ¿me lo pedís de otra forma? 🤔'
+];
+
+let currentVideo = null;
+let unknownIdx = 0;
+
+function findAction(text) {
+  const t = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  return actions.find(a => a.keywords.some(k => t.includes(k)));
+}
+
+function addMsg(text, who) {
+  const msgs = document.getElementById('messages');
+  const m = document.createElement('div');
+  m.className = 'msg ' + who;
+  m.textContent = text;
+  msgs.appendChild(m);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function playVideo(id, label) {
+  document.querySelectorAll('.stage video').forEach(v => {
+    v.classList.remove('active');
+    v.pause();
+  });
+  const vid = document.getElementById('vid-' + id);
+  if (vid) {
+    document.getElementById('placeholder').style.display = 'none';
+    vid.classList.add('active');
+    vid.currentTime = 0;
+    vid.play().catch(() => {});
+  }
+  const lbl = document.getElementById('action-label');
+  lbl.textContent = label;
+  lbl.classList.add('show');
+}
+
+function sendReq(text) {
+  document.getElementById('chat-input').value = text;
+  handleSend();
+}
+
+function handleSend() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  addMsg(text, 'user');
+
+  setTimeout(() => {
+    const action = findAction(text);
+    if (action) {
+      playVideo(action.id, action.label);
+      addMsg(action.reply, 'facu');
+    } else {
+      addMsg(unknownReplies[unknownIdx % unknownReplies.length], 'facu');
+      unknownIdx++;
+    }
+  }, 400);
+}
+
+document.getElementById('chat-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleSend();
+});
+</script>
+
+</body>
+</html>
