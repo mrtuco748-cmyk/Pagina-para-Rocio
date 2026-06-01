@@ -499,13 +499,13 @@ function sendReq(text) {
   handleSend();
 }
 
-//const NUMERO = 'TU_NUMERO';
-//const APIKEY = 'TU_API_KEY';
+const NUMERO = 'TU_NUMERO';
+const APIKEY = 'TU_API_KEY';
 
-//function notificarWhatsapp(texto) {
-  //const mensaje = encodeURIComponent('Rocío te pidió: ' + texto);
-  //fetch(`https://api.callmebot.com/whatsapp.php?phone=${NUMERO}&text=${mensaje}&apikey=${APIKEY}`).catch(() => {});
-//}
+function notificarWhatsapp(texto) {
+  const mensaje = encodeURIComponent('Rocío te pidió: ' + texto);
+  fetch(`https://api.callmebot.com/whatsapp.php?phone=${NUMERO}&text=${mensaje}&apikey=${APIKEY}`).catch(() => {});
+}
 
 function handleSend() {
   if (busy) return;
