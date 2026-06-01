@@ -4,7 +4,83 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
-<style>
+.btn-oculto {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    width: 18px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    opacity: 0.15;
+    transition: opacity 0.3s;
+    font-size: 0;
+    z-index: 100;
+  }
+
+  .btn-oculto:hover { opacity: 0.4; }
+
+  .poema-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .poema-overlay.show { display: flex; }
+
+  .poema-burbuja {
+    background: #1a1014;
+    border: 1px solid #6b2040;
+    border-radius: 40px 40px 40px 6px;
+    padding: 2rem 1.8rem;
+    max-width: 340px;
+    width: 100%;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .poema-burbuja::-webkit-scrollbar { width: 3px; }
+  .poema-burbuja::-webkit-scrollbar-thumb { background: #6b2040; border-radius: 3px; }
+
+  .poema-titulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: #e8809a;
+    margin-bottom: 1.2rem;
+    text-align: center;
+  }
+
+  .poema-texto {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: #c8a0a8;
+    line-height: 1.9;
+    text-align: center;
+  }
+
+  .poema-cerrar {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: transparent;
+    border: none;
+    color: #6b2040;
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .poema-cerrar:hover { color: #e8809a; }
+ <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
@@ -16,6 +92,15 @@
     align-items: center;
     padding: 2.5rem 1rem 2rem;
     color: #f0ede8;
+   <button class="btn-oculto" onclick="abrirPoema()">.</button>
+
+<div class="poema-overlay" id="poema-overlay" onclick="cerrarPoema(event)">
+  <div class="poema-burbuja">
+    <button class="poema-cerrar" onclick="cerrarPoema()">✕</button>
+    <p class="poema-titulo">ELÍSEO ❤</p>
+    <p class="poema-texto">Como si de algo divino fuera, nuestra relación es ese paraíso donde siempre quiero estar. Me transmite una sensación de alivio, como si no tuviese que preocuparme de ningún problema que tengo, como si todo estuviese resuelto, solo con tu amor puedo llegar a saber como se siente el cielo.<br><br>Nada nunca me hará experimentar lo que contigo siento, pues solo tú haces que me sienta completo, como si estuviera en una utopía donde cada estructura la construiste con todos los sentimientos que tenemos.<br><br>Tú eres esa sensación rozando lo divino.<br><br>No solo es la sensación, todo lo que rodea a nuestra relación me hace amar más a nosotros como pareja.</p>
+  </div>
+</div>
   }
 
   .titulo {
@@ -306,7 +391,15 @@
     <button onclick="handleSend()">↑</button>
   </div>
 </div>
+function abrirPoema() {
+  document.getElementById('poema-overlay').classList.add('show');
+}
 
+function cerrarPoema(e) {
+  if (!e || e.target === document.getElementById('poema-overlay')) {
+    document.getElementById('poema-overlay').classList.remove('show');
+  }
+}
 <script>
 const actions = [
   {
