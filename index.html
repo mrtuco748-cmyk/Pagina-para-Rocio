@@ -305,10 +305,21 @@ function findAction(text) {
 
 function addMsg(text, who) {
   const msgs = document.getElementById('messages');
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'display:flex; align-items:flex-end; gap:8px; ' + (who === 'user' ? 'justify-content:flex-end;' : 'justify-content:flex-start;');
+
+  if (who === 'facu') {
+    const foto = document.createElement('img');
+    foto.src = 'FOTO_FACU.jpg';
+    foto.style.cssText = 'width:32px; height:32px; border-radius:50%; object-fit:cover; flex-shrink:0;';
+    wrapper.appendChild(foto);
+  }
+
   const m = document.createElement('div');
   m.className = 'msg ' + who;
   m.textContent = text;
-  msgs.appendChild(m);
+  wrapper.appendChild(m);
+  msgs.appendChild(wrapper);
   msgs.scrollTop = msgs.scrollHeight;
 }
 
