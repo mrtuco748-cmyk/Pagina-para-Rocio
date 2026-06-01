@@ -2,27 +2,30 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Georgia', serif;
-    background: #1a1a18;
+    font-family: 'Inter', sans-serif;
+    background: #111110;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem 1rem 1rem;
+    padding: 2.5rem 1rem 2rem;
     color: #f0ede8;
   }
 
-  h1 {
-    font-size: 1.1rem;
+  .titulo {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.3rem;
     font-weight: 400;
-    letter-spacing: 0.08em;
-    color: #666;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
+    color: #a08060;
+    margin-bottom: 1.8rem;
+    letter-spacing: 0.02em;
   }
 
   .stage {
@@ -30,14 +33,15 @@
     max-width: 360px;
     aspect-ratio: 9/16;
     max-height: 640px;
-    background: #2a2a28;
-    border-radius: 20px;
+    background: #1a1a18;
+    border-radius: 24px;
     overflow: hidden;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1.5px solid #333;
+    border: 1px solid #2a2a26;
+    box-shadow: 0 0 60px rgba(160, 128, 96, 0.08);
   }
 
   .stage video {
@@ -45,35 +49,35 @@
     height: 100%;
     object-fit: cover;
     display: none;
-    border-radius: 20px;
+    border-radius: 24px;
   }
 
-  .stage video.active {
-    display: block;
-  }
+  .stage video.active { display: block; }
 
   .placeholder {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
-    color: #555;
+    color: #444;
   }
 
   .placeholder-circle {
-    width: 80px;
-    height: 80px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
-    background: #2a2a28;
+    background: #1e1e1c;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
 
   .placeholder p {
-    font-size: 0.9rem;
-    letter-spacing: 0.04em;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #444;
   }
 
   .action-label {
@@ -81,15 +85,16 @@
     bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(255,255,255,0.88);
+    background: rgba(17, 17, 16, 0.75);
+    backdrop-filter: blur(8px);
     border-radius: 20px;
-    padding: 6px 16px;
-    font-size: 0.8rem;
-    color: #555;
-    letter-spacing: 0.04em;
+    padding: 6px 18px;
+    font-size: 0.78rem;
+    color: #c8b89a;
+    letter-spacing: 0.06em;
     white-space: nowrap;
     display: none;
-    border: 0.5px solid #ddd;
+    border: 0.5px solid #3a3a36;
   }
 
   .action-label.show { display: block; }
@@ -97,88 +102,148 @@
   .chat-box {
     width: 100%;
     max-width: 360px;
-    margin-top: 1.5rem;
-    background: #222220;
-    border-radius: 20px;
-    border: 1px solid #333;
+    margin-top: 1.2rem;
+    background: #161614;
+    border-radius: 24px;
+    border: 1px solid #2a2a26;
     overflow: hidden;
   }
 
   .chat-header {
-    padding: 14px 18px 10px;
-    border-bottom: 0.5px solid #333;
+    padding: 14px 18px 12px;
+    border-bottom: 0.5px solid #222220;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .chat-header-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #a08060;
+    opacity: 0.7;
   }
 
   .chat-header p {
-    font-size: 0.85rem;
-    color: #666;
-    line-height: 1.5;
+    font-size: 0.78rem;
+    color: #555;
+    letter-spacing: 0.04em;
     font-style: italic;
   }
 
+  .suggestions {
+    display: flex;
+    gap: 6px;
+    padding: 12px 14px 8px;
+    flex-wrap: wrap;
+  }
+
+  .sug {
+    font-size: 0.75rem;
+    padding: 5px 13px;
+    border-radius: 20px;
+    border: 0.5px solid #333330;
+    background: transparent;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  .sug:hover {
+    background: #a08060;
+    color: #111;
+    border-color: #a08060;
+  }
+
   .chat-messages {
-    padding: 12px 16px;
-    min-height: 60px;
-    max-height: 120px;
+    padding: 10px 14px;
+    min-height: 50px;
+    max-height: 130px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
+  }
+
+  .chat-messages::-webkit-scrollbar { width: 3px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+  .msg-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 7px;
+  }
+
+  .msg-row.user { justify-content: flex-end; }
+  .msg-row.facu { justify-content: flex-start; }
+
+  .msg-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 0.5px solid #333;
   }
 
   .msg {
-    font-size: 0.9rem;
-    padding: 8px 12px;
-    border-radius: 14px;
-    max-width: 80%;
-    line-height: 1.4;
+    font-size: 0.85rem;
+    padding: 8px 13px;
+    line-height: 1.45;
+    max-width: 75%;
   }
 
   .msg.user {
-    background: #f0ede8;
-    color: #1a1a1a;
-    align-self: flex-end;
-    border-radius: 14px 14px 4px 14px;
+    background: #a08060;
+    color: #111;
+    border-radius: 16px 16px 4px 16px;
+    font-weight: 400;
   }
 
   .msg.facu {
-    background: #2a2a28;
-    color: #ccc;
-    align-self: flex-start;
-    border-radius: 14px 14px 14px 4px;
+    background: #1e1e1c;
+    color: #c8b89a;
+    border-radius: 16px 16px 16px 4px;
+    border: 0.5px solid #2a2a26;
   }
 
   .chat-input-row {
     display: flex;
     gap: 8px;
-    padding: 10px 14px 14px;
-    border-top: 0.5px solid #333;
+    padding: 10px 12px 14px;
+    border-top: 0.5px solid #222220;
   }
 
   .chat-input-row input {
     flex: 1;
-    border: 1px solid #444;
+    border: 0.5px solid #2a2a26;
     border-radius: 30px;
     padding: 10px 16px;
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     outline: none;
-    background: #2a2a28;
+    background: #1a1a18;
     color: #f0ede8;
-    font-family: inherit;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.02em;
+    transition: border-color 0.2s;
   }
 
-  .chat-input-row input::placeholder { color: #555; }
-  .chat-input-row input:focus { border-color: #666; }
+  .chat-input-row input::placeholder { color: #444; }
+  .chat-input-row input:focus { border-color: #a08060; }
 
   .chat-input-row button {
-    background: #f0ede8;
-    color: #1a1a1a;
+    background: #a08060;
+    color: #111;
     border: none;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -187,36 +252,16 @@
   }
 
   .chat-input-row button:hover { opacity: 0.8; }
-
-  .suggestions {
-    display: flex;
-    gap: 6px;
-    padding: 10px 14px;
-    flex-wrap: wrap;
-  }
-
-  .sug {
-    font-size: 0.78rem;
-    padding: 4px 12px;
-    border-radius: 20px;
-    border: 1px solid #444;
-    background: #2a2a28;
-    color: #888;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .sug:hover { background: #f0ede8; color: #1a1a1a; border-color: #f0ede8; }
 </style>
 </head>
 <body>
 
-<h1>Facu a tu servicio</h1>
+<p class="titulo">Facu a tu servicio</p>
 
 <div class="stage" id="stage">
   <div class="placeholder" id="placeholder">
     <div class="placeholder-circle">🎭</div>
-    <p>Facu está esperando</p>
+    <p>esperando una orden</p>
   </div>
 
   <video id="vid-idle" loop muted playsinline>
@@ -243,7 +288,8 @@
 
 <div class="chat-box">
   <div class="chat-header">
-    <p>dile a Facu que haga algo </p>
+    <div class="chat-header-dot"></div>
+    <p>dile a Facu que haga algo 👀</p>
   </div>
 
   <div class="suggestions">
@@ -256,7 +302,7 @@
   <div class="chat-messages" id="messages"></div>
 
   <div class="chat-input-row">
-    <input id="chat-input" type="text" placeholder="Ej: bailá, cantá, tirá un beso..." />
+    <input id="chat-input" type="text" placeholder="pedile algo a Facu..." />
     <button onclick="handleSend()">↑</button>
   </div>
 </div>
@@ -305,21 +351,21 @@ function findAction(text) {
 
 function addMsg(text, who) {
   const msgs = document.getElementById('messages');
-  const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'display:flex; align-items:flex-end; gap:8px; ' + (who === 'user' ? 'justify-content:flex-end;' : 'justify-content:flex-start;');
+  const row = document.createElement('div');
+  row.className = 'msg-row ' + who;
 
   if (who === 'facu') {
-    const foto = document.createElement('img');
-    foto.src = 'FOTO_FACU.jpg';
-    foto.style.cssText = 'width:32px; height:32px; border-radius:50%; object-fit:cover; flex-shrink:0;';
-    wrapper.appendChild(foto);
+    const img = document.createElement('img');
+    img.src = 'FOTO_FACU.jpg';
+    img.className = 'msg-avatar';
+    row.appendChild(img);
   }
 
   const m = document.createElement('div');
   m.className = 'msg ' + who;
   m.textContent = text;
-  wrapper.appendChild(m);
-  msgs.appendChild(wrapper);
+  row.appendChild(m);
+  msgs.appendChild(row);
   msgs.scrollTop = msgs.scrollHeight;
 }
 
@@ -342,38 +388,24 @@ function setLabel(text) {
   else lbl.classList.remove('show');
 }
 
-// Reproduce un video y devuelve una promesa que se resuelve cuando termina
 function playOnce(id, label) {
   return new Promise(resolve => {
     const vid = showOnly(id);
     setLabel(label);
     vid.play().catch(() => {});
-    vid.onended = () => {
-      vid.onended = null;
-      resolve();
-    };
+    vid.onended = () => { vid.onended = null; resolve(); };
   });
 }
 
-// Secuencia completa: cortina -> accion -> cortina -> idle
 async function playSequence(action) {
   busy = true;
-
-  // 1. cortina de entrada
   await playOnce('cortina', '');
-
-  // 2. video de la accion
   await playOnce(action.id, action.label);
-
-  // 3. cortina de salida
   await playOnce('cortina', '');
-
-  // 4. volver al idle
   const idle = showOnly('idle');
   setLabel('');
   idle.loop = true;
   idle.play().catch(() => {});
-
   busy = false;
 }
 
@@ -382,13 +414,12 @@ function sendReq(text) {
   handleSend();
 }
 
-const NUMERO = '5493786614189';
-const APIKEY = '6907423';
+const NUMERO = 'TU_NUMERO';
+const APIKEY = 'TU_API_KEY';
 
 function notificarWhatsapp(texto) {
   const mensaje = encodeURIComponent('Rocío te pidió: ' + texto);
-  fetch(`https://api.callmebot.com/whatsapp.php?phone=${NUMERO}&text=${mensaje}&apikey=${APIKEY}`)
-    .catch(() => {});
+  fetch(`https://api.callmebot.com/whatsapp.php?phone=${NUMERO}&text=${mensaje}&apikey=${APIKEY}`).catch(() => {});
 }
 
 function handleSend() {
@@ -399,6 +430,7 @@ function handleSend() {
   input.value = '';
   addMsg(text, 'user');
   notificarWhatsapp(text);
+
   setTimeout(() => {
     const action = findAction(text);
     if (action) {
@@ -415,7 +447,6 @@ document.getElementById('chat-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') handleSend();
 });
 
-// Arrancar con el idle
 const idle = showOnly('idle');
 idle.loop = true;
 idle.play().catch(() => {});
