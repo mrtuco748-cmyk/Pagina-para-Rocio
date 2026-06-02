@@ -372,6 +372,15 @@
   <video id="vid-ejercicio" playsinline>
     <source src="TU_VIDEO_EJERCICIO.mp4" type="video/mp4">
   </video>
+  <video id="vid-meme1" playsinline>
+    <source src="meme1.mp4" type="video/mp4">
+  </video>
+  <video id="vid-meme2" playsinline>
+     <source src="meme2.mp4" type="video/mp4">
+  </video>
+  <video id="vid-meme3" playsinline>
+     <source src="meme3.mp4" type="video/mp4">
+  </video>
   <div class="action-label" id="action-label"></div>
 </div>
 
@@ -515,6 +524,25 @@ function notificarWhatsapp(texto) {
   fetch(`https://api.callmebot.com/whatsapp.php?phone=${NUMERO}&text=${mensaje}&apikey=${APIKEY}`).catch(() => {});
 }
 
+ 
+const memes = ['meme1', 'meme2', 'meme3'];
+const memeKeywords = const memeKeywords = [
+  'meme', 'memes', 'memeo', 'memear',
+  'gracioso', 'graciosa', 'graciosos', 'graciosas',
+  'divertido', 'divertida', 'divertidos', 'divertidas', 'divertite',
+  'reir', 'reirse', ' reis', 'rei', 'reia', 'riete', 'ríete', 'reite',
+  'risa', 'risas', 'carcajada', 'carcajadas',
+  'jaja', 'jajaja', 'jajajaja', 'jeje', 'jajeje', 'ajaja',
+  'lol', 'lmao', 'haha', 'hehe',
+  'chiste', 'chistes', 'chistoso', 'chistosa',
+  'humor', 'humoristico', 'comico', 'comica',
+  'payasada', 'payasadas', 'payaso',
+  'algo gracioso', 'hazme reir', 'haceme reir',
+  'quiero reir', 'quiero reírme', 'mostrame algo',
+  'entretenido', 'entreteneme', 'aburrida', 'aburri'
+];
+
+ 
 function handleSend() {
   if (busy) return;
   const input = document.getElementById('chat-input');
@@ -524,13 +552,22 @@ function handleSend() {
   addMsg(text, 'user');
   notificarWhatsapp(text);
   setTimeout(() => {
-    const action = findAction(text);
-    if (action) {
-      addMsg(action.reply, 'facu');
-      playSequence(action);
+    const t = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const esMeme = memeKeywords.some(k => t.includes(k));
+
+    if (esMeme) {
+      const id = memes[Math.floor(Math.random() * memes.length)];
+      addMsg('¡Ahí va un meme! 😂', 'facu');
+      playSequence({ id, label: '😂 meme incoming...' });
     } else {
-      addMsg(unknownReplies[unknownIdx % unknownReplies.length], 'facu');
-      unknownIdx++;
+      const action = findAction(text);
+      if (action) {
+        addMsg(action.reply, 'facu');
+        playSequence(action);
+      } else {
+        addMsg(unknownReplies[unknownIdx % unknownReplies.length], 'facu');
+        unknownIdx++;
+      }
     }
   }, 400);
 }
