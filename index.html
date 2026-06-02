@@ -369,7 +369,9 @@
   <video id="vid-beso" playsinline>
     <source src="TU_VIDEO_BESO.mp4" type="video/mp4">
   </video>
-
+  <video id="vid-ejercicio" playsinline>
+    <source src="TU_VIDEO_EJERCICIO.mp4" type="video/mp4">
+  </video>
   <div class="action-label" id="action-label"></div>
 </div>
 
@@ -402,6 +404,12 @@ const actions = [
     label: '🕺 bailando...',
     reply: '¡A mover el esqueleto!'
   },
+ {
+  id:'ejercicio',
+  keyords:['exercise','ejercicio','ejericios','ejercitar','ejercitando','flexiones','flexion','ejercite'],
+  label:'bombeando esos musculos',
+  reply:'si no duele no sirve'
+ },
   {
     id: 'cantar',
     keywords: ['cant','sing','song','cancion','canción','voz','tema','serenata'],
