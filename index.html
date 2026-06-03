@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facu a tu servicio</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -835,7 +836,7 @@
   <div class="chat-messages" id="messages"></div>
 
   <div class="chat-input-row">
-    <input id="chat-input" type="text" placeholder="pedile algo a Facu..." />
+    <input id="chat-input" type="text" placeholder="pedile algo a Facu..." onkeydown="if(event.key === 'Enter') handleSend()"/>
     <button onclick="handleSend()">↑</button>
   </div>
 </div>
@@ -848,7 +849,7 @@ const actions = [
   {
     id: 'bailar',
     keywords: ['bail','dance','pista','mov','ritmo','cumbia','musica','música'],
-    label: ' bailando...',
+    label: '💃 bailando...',
     reply: '¡A mover el esqueleto!'
   },
   {
@@ -872,7 +873,7 @@ const actions = [
   {
     id: 'beso',
     keywords: ['beso','kiss','mwah','amor','corazon','corazón','love','pico'],
-    label: ' tirando un beso...',
+    label: '😘 tirando un beso...',
     reply: '¡Muak! Con todo mi amor 💕'
   }
 ];
@@ -911,29 +912,30 @@ const memeKeywords = [
 ];
 
 // ————— LOGROS —————
+// He cambiado los ID 'xxxl' repetidos por ID únicos secuenciales para que funcionen correctamente con localStorage
 const logrosData = [
-  { id: 'bailar',     icono: '🦂', nombre: 'Nacido para la salsa',           desc: 'Pidió bailar por primera vez' },
-  { id: 'cantar',     icono: '😫', nombre: 'Vidrios rotos',                desc: 'Pidió cantar por primera vez' },
+  { id: 'bailar',      icono: '🦂', nombre: 'Nacido para la salsa',      desc: 'Pidió bailar por primera vez' },
+  { id: 'cantar',      icono: '😫', nombre: 'Vidrios rotos',                desc: 'Pidió cantar por primera vez' },
   { id: 'reverencia', icono: '😇', nombre: 'Mi señora',               desc: 'Pidió una reverencia por primera vez' },
-  { id: 'beso',       icono: '😘', nombre: 'Muak',                  desc: 'Pidió un beso por primera vez' },
+  { id: 'beso',        icono: '😘', nombre: 'Muak',                   desc: 'Pidió un beso por primera vez' },
   { id: 'ejercicio',  icono: '💪', nombre: 'Sin dolor no hay gloria', desc: 'Pidió ejercicio por primera vez' },
-  { id: 'meme',       icono: 'XD', nombre: 'Por los jajas',       desc: 'Pidió un meme por primera vez' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
-  { id:'xxxl',        icono: '😎', nombre: 'logro a agregar',     desc:'descripcion a agregar' },
+  { id: 'meme',        icono: 'XD', nombre: 'Por los jajas',       desc: 'Pidió un meme por primera vez' },
+  { id: 'logro_7',     icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_8',     icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_9',     icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_10',    icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_11',    icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_12',    icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_13',    icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_14',    icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_15',    icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_16',    icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_17',    icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_18',    icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_19',    icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_20',    icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_21',    icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
+  { id: 'logro_22',    icono: '😎', nombre: 'logro a agregar',     desc: 'descripcion a agregar' },
 ];
 
 let logrosDesbloqueados = JSON.parse(localStorage.getItem('logros') || '[]');
@@ -975,7 +977,7 @@ function abrirLogros() {
 }
 
 function cerrarLogros(e) {
-  if (!e || e.target === document.getElementById('logros-overlay')) {
+  if (!e || e.target === document.getElementById('logros-overlay') || e.target.classList.contains('logros-cerrar')) {
     document.getElementById('logros-overlay').classList.remove('show');
   }
 }
@@ -989,30 +991,30 @@ const fotosData = [
   { id: 4,  titulo: 'Ese momento',                 archivo: 'foto4.jpg' },
   { id: 5,  titulo: 'Te quiero mucho',             archivo: 'foto5.jpg' },
   { id: 6,  titulo: 'Recuerdo favorito',           archivo: 'foto6.jpg' },
-  { id: 7,  titulo: 'Día especial',                archivo: 'foto7.jpg' },
-  { id: 8,  titulo: 'Sonrisa tuya',                archivo: 'foto8.jpg' },
+  { id: 7,  titulo: 'Día especial',                 archivo: 'foto7.jpg' },
+  { id: 8,  titulo: 'Sonrisa tuya',                 archivo: 'foto8.jpg' },
   { id: 9,  titulo: 'Lo nuestro',                  archivo: 'foto9.jpg' },
-  { id: 10, titulo: 'Aventura juntos',             archivo: 'foto10.jpg' },
-  { id: 11, titulo: 'Tarde de los dos',            archivo: 'foto11.jpg' },
+  { id: 10, titulo: 'Aventura juntos',              archivo: 'foto10.jpg' },
+  { id: 11, titulo: 'Tarde de los dos',             archivo: 'foto11.jpg' },
   { id: 12, titulo: 'Mi persona favorita',         archivo: 'foto12.jpg' },
-  { id: 13, titulo: 'Siempre juntos',              archivo: 'foto13.jpg' },
-  { id: 14, titulo: 'Momento único',               archivo: 'foto14.jpg' },
-  { id: 15, titulo: 'Para siempre',                archivo: 'foto15.jpg' },
-  { id: 16, titulo: 'Nuestra historia',            archivo: 'foto16.jpg' },
-  { id: 17, titulo: 'Un día más contigo',          archivo: 'foto17.jpg' },
+  { id: 13, titulo: 'Siempre juntos',               archivo: 'foto13.jpg' },
+  { id: 14, titulo: 'Momento único',                archivo: 'foto14.jpg' },
+  { id: 15, titulo: 'Para siempre',                 archivo: 'foto15.jpg' },
+  { id: 16, titulo: 'Nuestra historia',             archivo: 'foto16.jpg' },
+  { id: 17, titulo: 'Un día más contigo',           archivo: 'foto17.jpg' },
   { id: 18, titulo: 'Lo mejor de mi vida',         archivo: 'foto18.jpg' },
   { id: 19, titulo: 'Ese instante',                archivo: 'foto19.jpg' },
   { id: 20, titulo: 'Contigo todo es mejor',       archivo: 'foto20.jpg' },
-  { id: 21, titulo: 'Recuerdo eterno',             archivo: 'foto21.jpg' },
-  { id: 22, titulo: 'Juntos de nuevo',             archivo: 'foto22.jpg' },
-  { id: 23, titulo: 'Nuestro lugar',               archivo: 'foto23.jpg' },
-  { id: 24, titulo: 'El mejor día',                archivo: 'foto24.jpg' },
-  { id: 25, titulo: 'Felicidad pura',              archivo: 'foto25.jpg' },
-  { id: 26, titulo: 'Solo nosotros',               archivo: 'foto26.jpg' },
-  { id: 27, titulo: 'Una sonrisa más',             archivo: 'foto27.jpg' },
-  { id: 28, titulo: 'Nuestro mundo',               archivo: 'foto28.jpg' },
-  { id: 29, titulo: 'El momento perfecto',         archivo: 'foto29.jpg' },
-  { id: 30, titulo: 'Te amo',                      archivo: 'foto30.jpg' },
+  { id: 21, titulo: 'Recuerdo eterno',              archivo: 'foto21.jpg' },
+  { id: 22, titulo: 'Juntos de nuevo',              archivo: 'foto22.jpg' },
+  { id: 23, titulo: 'Nuestro lugar',                archivo: 'foto23.jpg' },
+  { id: 24, titulo: 'El mejor día',                 archivo: 'foto24.jpg' },
+  { id: 25, titulo: 'Felicidad pura',               archivo: 'foto25.jpg' },
+  { id: 26, titulo: 'Solo nosotros',                archivo: 'foto26.jpg' },
+  { id: 27, titulo: 'Una sonrisa más',              archivo: 'foto27.jpg' },
+  { id: 28, titulo: 'Nuestro mundo',                archivo: 'foto28.jpg' },
+  { id: 29, titulo: 'El momento perfecto',          archivo: 'foto29.jpg' },
+  { id: 30, titulo: 'Te amo',                       archivo: 'foto30.jpg' },
 ];
 
 let fotosDesbloqueadas = JSON.parse(localStorage.getItem('fotos') || '[]');
@@ -1086,7 +1088,7 @@ function abrirFotos() {
 }
 
 function cerrarFotos(e) {
-  if (!e || e.target === document.getElementById('fotos-overlay')) {
+  if (!e || e.target === document.getElementById('fotos-overlay') || e.target.classList.contains('fotos-cerrar')) {
     document.getElementById('fotos-overlay').classList.remove('show');
   }
 }
@@ -1098,7 +1100,7 @@ function abrirFotoGrande(src, titulo) {
 }
 
 function cerrarFotoGrande(e) {
-  if (!e || e.target === document.getElementById('foto-grande-overlay')) {
+  if (!e || e.target === document.getElementById('foto-grande-overlay') || e.target.classList.contains('foto-grande-cerrar')) {
     document.getElementById('foto-grande-overlay').classList.remove('show');
   }
 }
@@ -1115,7 +1117,7 @@ function addMsg(text, who) {
   row.className = 'msg-row ' + who;
   if (who === 'facu') {
     const img = document.createElement('img');
-    img.src = 'FOTO_FACU.jpg';
+    img.src = 'FOTO_FACU.jpg'; // Asegúrate de tener esta imagen disponible
     img.className = 'msg-avatar';
     row.appendChild(img);
   }
@@ -1134,9 +1136,12 @@ function showOnly(id) {
   });
   document.getElementById('placeholder').style.display = 'none';
   const vid = document.getElementById('vid-' + id);
-  vid.classList.add('active');
-  vid.currentTime = 0;
-  return vid;
+  if(vid) {
+    vid.classList.add('active');
+    vid.currentTime = 0;
+    return vid;
+  }
+  return null;
 }
 
 function setLabel(text) {
@@ -1149,87 +1154,85 @@ function setLabel(text) {
 function playOnce(id, label) {
   return new Promise(resolve => {
     const vid = showOnly(id);
+    if (!vid) { resolve(); return; }
     setLabel(label);
     vid.play().catch(() => {});
     vid.onended = () => { vid.onended = null; resolve(); };
   });
 }
 
-async function playSequence(action) {
+async function playSequence(actionId, label) {
   busy = true;
   await playOnce('cortina', '');
-  await playOnce(action.id, action.label);
+  await playOnce(actionId, label);
   await playOnce('cortina', '');
   const idle = showOnly('idle');
   setLabel('');
-  idle.loop = true;
-  idle.play().catch(() => {});
+  if (idle) {
+    idle.loop = true;
+    idle.play().catch(() => {});
+  }
   busy = false;
 }
 
+// ————— COMPLEMENTO DE FUNCIONES DE COMUNICACIÓN —————
+
 function sendReq(text) {
-  document.getElementById('chat-input').value = text;
-  handleSend();
-}
+  if (busy) return;
+  addMsg(text, 'user');
 
-const NUMERO = 'TU_NUMERO';
-const APIKEY = 'TU_API_KEY';
+  // Evaluar si es un meme
+  const tNorm = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const esMeme = memeKeywords.some(k => tNorm.includes(k));
 
-function notificarWhatsapp(texto) {
-  const mensaje = encodeURIComponent('Rocío te pidió: ' + texto);
-  fetch(`https://api.callmebot.com/whatsapp.php?phone=${NUMERO}&text=${mensaje}&apikey=${APIKEY}`).catch(() => {});
+  if (esMeme) {
+    const memeElegido = memeAleatorio();
+    setTimeout(() => {
+      addMsg('¡Ahí te va algo para reír! 🤣', 'facu');
+      playSequence(memeElegido, '🎬 Mostrando meme...');
+      desbloquearLogro('meme');
+    }, 600);
+    return;
+  }
+
+  // Evaluar acciones regulares
+  const action = findAction(text);
+  if (action) {
+    setTimeout(() => {
+      addMsg(action.reply, 'facu');
+      playSequence(action.id, action.label);
+      desbloquearLogro(action.id);
+    }, 600);
+  } else {
+    // Respuesta por defecto si no entiende la orden
+    setTimeout(() => {
+      addMsg(unknownReplies[unknownIdx], 'facu');
+      unknownIdx = (unknownIdx + 1) % unknownReplies.length;
+    }, 600);
+  }
 }
 
 function handleSend() {
-  if (busy) return;
   const input = document.getElementById('chat-input');
   const text = input.value.trim();
   if (!text) return;
+  sendReq(text);
   input.value = '';
-  addMsg(text, 'user');
-  notificarWhatsapp(text);
-  setTimeout(() => {
-    const t = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-    const esMeme = memeKeywords.some(k => t.includes(k));
-    if (esMeme) {
-      const id = memeAleatorio();
-      addMsg('¡Ahí va un meme! 😂', 'facu');
-      playSequence({ id, label: '😂 meme incoming...' });
-      desbloquearLogro('meme');
-    } else {
-      const action = findAction(text);
-      if (action) {
-        addMsg(action.reply, 'facu');
-        playSequence(action);
-        desbloquearLogro(action.id);
-      } else {
-        addMsg(unknownReplies[unknownIdx % unknownReplies.length], 'facu');
-        unknownIdx++;
-      }
-    }
-  }, 400);
 }
 
+// ————— POEMA —————
 function abrirPoema() {
   document.getElementById('poema-overlay').classList.add('show');
 }
 
 function cerrarPoema(e) {
-  if (!e || e.target === document.getElementById('poema-overlay')) {
+  if (!e || e.target === document.getElementById('poema-overlay') || e.target.classList.contains('poema-cerrar')) {
     document.getElementById('poema-overlay').classList.remove('show');
   }
 }
 
-document.getElementById('chat-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') handleSend();
-});
-
+// Inicialización de estados visuales al cargar la página
 actualizarPuntoFotos();
-
-const idle = showOnly('idle');
-idle.loop = true;
-idle.play().catch(() => {});
 </script>
-
 </body>
 </html>
