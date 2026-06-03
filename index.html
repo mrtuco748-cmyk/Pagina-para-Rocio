@@ -786,7 +786,7 @@
     <p>esperando una orden</p>
   </div>
 
-  <video id="vid-idle" loop muted playsinline>
+  <video id="vid-idle" autoplay loop muted playsinline>
     <source src="TU_VIDEO_IDLE.mp4" type="video/mp4">
   </video>
   <video id="vid-cortina" playsinline>
@@ -985,7 +985,7 @@ function cerrarLogros(e) {
 
 // ————— FOTOS —————
 const fotosData = [
-  { id: 1,  titulo: 'Nuestro primer día',         archivo: 'foto1.jpg' },
+  { id: 1,  titulo: 'momentazo',         archivo: 'foto1.jpg' },
   { id: 2,  titulo: 'Una tarde especial',          archivo: 'foto2.jpg' },
   { id: 3,  titulo: 'Juntos siempre',              archivo: 'foto3.jpg' },
   { id: 4,  titulo: 'Ese momento',                 archivo: 'foto4.jpg' },
@@ -1166,10 +1166,12 @@ async function playSequence(actionId, label) {
   await playOnce('cortina', '');
   await playOnce(actionId, label);
   await playOnce('cortina', '');
+  
   const idle = showOnly('idle');
   setLabel('');
   if (idle) {
     idle.loop = true;
+    idle.muted = true; // 👈 Agregamos esto para asegurar que el navegador no bloquee el regreso al idle
     idle.play().catch(() => {});
   }
   busy = false;
@@ -1188,7 +1190,7 @@ function sendReq(text) {
   if (esMeme) {
     const memeElegido = memeAleatorio();
     setTimeout(() => {
-      addMsg('¡Ahí te va algo para reír! 🤣', 'facu');
+      addMsg('¡Ahí te va algo para reír! ', 'facu');
       playSequence(memeElegido, '🎬 Mostrando meme...');
       desbloquearLogro('meme');
     }, 600);
