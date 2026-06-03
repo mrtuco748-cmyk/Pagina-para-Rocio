@@ -387,7 +387,7 @@
 <div class="chat-box">
   <div class="chat-header">
     <div class="chat-header-dot"></div>
-    <p>dile a Facu que haga algo 👀</p>
+    <p>dile a Facu que haga algo </p>
   </div>
 
   <div class="suggestions">
@@ -410,7 +410,7 @@ const actions = [
   {
     id: 'bailar',
     keywords: ['bail','dance','pista','mov','ritmo','cumbia','musica','música'],
-    label: '🕺 bailando...',
+    label: ' bailando...',
     reply: '¡A mover el esqueleto!'
   },
  {
@@ -422,7 +422,7 @@ const actions = [
   {
     id: 'cantar',
     keywords: ['cant','sing','song','cancion','canción','voz','tema','serenata'],
-    label: '🎤 cantando...',
+    label: 'cantando...',
     reply: '¡Do re mi fa sol la si!'
   },
   {
@@ -434,15 +434,15 @@ const actions = [
   {
     id: 'beso',
     keywords: ['beso','kiss','mwah','amor','corazon','corazón','love','pico'],
-    label: '😘 tirando un beso...',
+    label: ' tirando un beso...',
     reply: '¡Muak! Con todo mi amor 💕'
   }
 ];
 
 const unknownReplies = [
-  'Mmmm eso no lo sé hacer 😅 ¿probás con bailar o cantar?',
-  '¡Che, eso está fuera de mi repertorio! Intentá con beso o reverencia 😅',
-  'No entendí bien... ¿me lo pedís de otra forma? 🤔'
+  '¿cómo? dilo de otra forma',
+  ' eso aun no lo puedo hacer ',
+  'No entendí bien... ¿me lo pedís de otra forma? ','prueba a pedirlo de otra forma'
 ];
 
 let unknownIdx = 0;
@@ -564,7 +564,7 @@ function handleSend() {
 
     if (esMeme) {
       const id = memeAleatorio();
-      addMsg('¡Ahí va un meme! ', 'facu');
+      addMsg('a ver si te da risa ', 'facu');
       playSequence({ id, label: ' meme incoming...' });
     } else {
       const action = findAction(text);
