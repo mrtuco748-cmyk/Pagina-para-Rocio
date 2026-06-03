@@ -557,8 +557,8 @@ function handleSend() {
 
     if (esMeme) {
       const id = memes[Math.floor(Math.random() * memes.length)];
-      addMsg('¡Ahí va un meme! 😂', 'facu');
-      playSequence({ id, label: '😂 meme incoming...' });
+      addMsg('¡Ahí va un meme! ', 'facu');
+      playSequence({ id, label: ' meme incoming...' });
     } else {
       const action = findAction(text);
       if (action) {
