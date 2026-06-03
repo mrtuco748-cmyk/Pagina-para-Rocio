@@ -330,6 +330,7 @@
 
   .chat-input-row button:hover { opacity: 0.8; }
 
+  /* BOTONES FLOTANTES */
   .btn-logros {
     position: fixed;
     top: 14px;
@@ -351,6 +352,45 @@
 
   .btn-logros:hover { border-color: #a08060; color: #a08060; }
 
+  .btn-fotos-wrap {
+    position: fixed;
+    top: 58px;
+    right: 14px;
+    z-index: 100;
+  }
+
+  .btn-fotos {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid #333;
+    color: #666;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-fotos:hover { border-color: #a08060; color: #a08060; }
+
+  .btn-fotos-punto {
+    display: none;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #e8404a;
+    border: 1.5px solid #111110;
+  }
+
+  .btn-fotos-punto.show { display: block; }
+
+  /* LOGROS */
   .logros-overlay {
     display: none;
     position: fixed;
@@ -422,10 +462,7 @@
     transition: all 0.3s;
   }
 
-  .logro-item.desbloqueado .logro-icono {
-    filter: grayscale(0);
-    opacity: 1;
-  }
+  .logro-item.desbloqueado .logro-icono { filter: grayscale(0); opacity: 1; }
 
   .logro-nombre {
     font-size: 0.85rem;
@@ -479,14 +516,225 @@
     font-size: 1.2rem;
     color: #f0ede8;
   }
+
+  /* FOTOS */
+  .fotos-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .fotos-overlay.show { display: flex; }
+
+  .fotos-panel {
+    background: #161614;
+    border: 1px solid #2a2a26;
+    border-radius: 24px;
+    padding: 1.8rem;
+    max-width: 340px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .fotos-panel::-webkit-scrollbar { width: 3px; }
+  .fotos-panel::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+  .fotos-titulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: #a08060;
+    text-align: center;
+    margin-bottom: 1.2rem;
+  }
+
+  .fotos-cerrar {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: transparent;
+    border: none;
+    color: #444;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+
+  .fotos-cerrar:hover { color: #f0ede8; }
+
+  .fotos-grilla {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .foto-item {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    background: #1e1e1c;
+    border: 0.5px solid #2a2a26;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .foto-item.bloqueada {
+    background: #1a1a18;
+    cursor: default;
+  }
+
+  .foto-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .foto-item-titulo {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    background: rgba(0,0,0,0.6);
+    font-size: 0.6rem;
+    color: #c8b89a;
+    text-align: center;
+    padding: 3px 4px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .foto-bloqueada-icono {
+    font-size: 1.4rem;
+    opacity: 0.3;
+  }
+
+  .foto-bloqueada-titulo {
+    font-size: 0.55rem;
+    color: #333;
+    text-align: center;
+    margin-top: 4px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.05em;
+  }
+
+  /* FOTO EN GRANDE */
+  .foto-grande-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 400;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    padding: 2rem;
+  }
+
+  .foto-grande-overlay.show { display: flex; }
+
+  .foto-grande-overlay img {
+    max-width: 100%;
+    max-height: 70vh;
+    border-radius: 16px;
+    object-fit: contain;
+  }
+
+  .foto-grande-titulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #c8b89a;
+    text-align: center;
+  }
+
+  .foto-grande-cerrar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: #666;
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+
+  .foto-grande-cerrar:hover { color: #f0ede8; }
+
+  /* NOTIF FOTO */
+  .notif-foto {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #161614;
+    border: 1px solid #a08060;
+    border-radius: 24px;
+    padding: 2rem 2.4rem;
+    text-align: center;
+    z-index: 500;
+    min-width: 260px;
+    box-shadow: 0 0 60px rgba(160, 128, 96, 0.2);
+  }
+
+  .notif-foto.show { display: block; }
+
+  .notif-foto-emoji {
+    font-size: 2.4rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .notif-foto-titulo {
+    font-size: 0.65rem;
+    color: #a08060;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .notif-foto-nombre {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: #f0ede8;
+    margin-bottom: 1.2rem;
+  }
+
+  .notif-foto-btn {
+    background: #a08060;
+    color: #111;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
 </style>
 </head>
 <body>
 
 <button class="btn-logros" onclick="abrirLogros()">🏆</button>
 
+<div class="btn-fotos-wrap">
+  <button class="btn-fotos" onclick="abrirFotos()">📸</button>
+  <div class="btn-fotos-punto" id="btn-fotos-punto"></div>
+</div>
+
 <div class="logros-overlay" id="logros-overlay" onclick="cerrarLogros(event)">
-  <div class="logros-panel" id="logros-panel">
+  <div class="logros-panel">
     <button class="logros-cerrar" onclick="cerrarLogros()">✕</button>
     <p class="logros-titulo">Logros</p>
     <div id="logros-lista"></div>
@@ -496,6 +744,27 @@
 <div class="notif-logro" id="notif-logro">
   <div class="notif-logro-titulo">logro desbloqueado</div>
   <div class="notif-logro-nombre" id="notif-logro-nombre"></div>
+</div>
+
+<div class="fotos-overlay" id="fotos-overlay" onclick="cerrarFotos(event)">
+  <div class="fotos-panel">
+    <button class="fotos-cerrar" onclick="cerrarFotos()">✕</button>
+    <p class="fotos-titulo">Nuestros momentos</p>
+    <div class="fotos-grilla" id="fotos-grilla"></div>
+  </div>
+</div>
+
+<div class="foto-grande-overlay" id="foto-grande-overlay" onclick="cerrarFotoGrande(event)">
+  <button class="foto-grande-cerrar" onclick="cerrarFotoGrande()">✕</button>
+  <img id="foto-grande-img" src="" alt="">
+  <div class="foto-grande-titulo" id="foto-grande-titulo"></div>
+</div>
+
+<div class="notif-foto" id="notif-foto">
+  <div class="notif-foto-emoji">📸</div>
+  <div class="notif-foto-titulo">¡foto desbloqueada!</div>
+  <div class="notif-foto-nombre" id="notif-foto-nombre"></div>
+  <button class="notif-foto-btn" onclick="cerrarNotifFoto()">ver ahora ✨</button>
 </div>
 
 <button class="btn-oculto" onclick="abrirPoema()">.</button>
@@ -579,7 +848,7 @@ const actions = [
   {
     id: 'bailar',
     keywords: ['bail','dance','pista','mov','ritmo','cumbia','musica','música'],
-    label: '🕺 bailando...',
+    label: ' bailando...',
     reply: '¡A mover el esqueleto!'
   },
   {
@@ -603,7 +872,7 @@ const actions = [
   {
     id: 'beso',
     keywords: ['beso','kiss','mwah','amor','corazon','corazón','love','pico'],
-    label: '😘 tirando un beso...',
+    label: ' tirando un beso...',
     reply: '¡Muak! Con todo mi amor 💕'
   }
 ];
@@ -697,6 +966,7 @@ function desbloquearLogro(id) {
   document.getElementById('notif-logro-nombre').textContent = logro.icono + ' ' + logro.nombre;
   notif.classList.add('show');
   setTimeout(() => notif.classList.remove('show'), 3000);
+  verificarFotos();
 }
 
 function abrirLogros() {
@@ -710,6 +980,129 @@ function cerrarLogros(e) {
   }
 }
 // ————— FIN LOGROS —————
+
+// ————— FOTOS —————
+const fotosData = [
+  { id: 1,  titulo: 'Nuestro primer día',         archivo: 'foto1.jpg' },
+  { id: 2,  titulo: 'Una tarde especial',          archivo: 'foto2.jpg' },
+  { id: 3,  titulo: 'Juntos siempre',              archivo: 'foto3.jpg' },
+  { id: 4,  titulo: 'Ese momento',                 archivo: 'foto4.jpg' },
+  { id: 5,  titulo: 'Te quiero mucho',             archivo: 'foto5.jpg' },
+  { id: 6,  titulo: 'Recuerdo favorito',           archivo: 'foto6.jpg' },
+  { id: 7,  titulo: 'Día especial',                archivo: 'foto7.jpg' },
+  { id: 8,  titulo: 'Sonrisa tuya',                archivo: 'foto8.jpg' },
+  { id: 9,  titulo: 'Lo nuestro',                  archivo: 'foto9.jpg' },
+  { id: 10, titulo: 'Aventura juntos',             archivo: 'foto10.jpg' },
+  { id: 11, titulo: 'Tarde de los dos',            archivo: 'foto11.jpg' },
+  { id: 12, titulo: 'Mi persona favorita',         archivo: 'foto12.jpg' },
+  { id: 13, titulo: 'Siempre juntos',              archivo: 'foto13.jpg' },
+  { id: 14, titulo: 'Momento único',               archivo: 'foto14.jpg' },
+  { id: 15, titulo: 'Para siempre',                archivo: 'foto15.jpg' },
+  { id: 16, titulo: 'Nuestra historia',            archivo: 'foto16.jpg' },
+  { id: 17, titulo: 'Un día más contigo',          archivo: 'foto17.jpg' },
+  { id: 18, titulo: 'Lo mejor de mi vida',         archivo: 'foto18.jpg' },
+  { id: 19, titulo: 'Ese instante',                archivo: 'foto19.jpg' },
+  { id: 20, titulo: 'Contigo todo es mejor',       archivo: 'foto20.jpg' },
+  { id: 21, titulo: 'Recuerdo eterno',             archivo: 'foto21.jpg' },
+  { id: 22, titulo: 'Juntos de nuevo',             archivo: 'foto22.jpg' },
+  { id: 23, titulo: 'Nuestro lugar',               archivo: 'foto23.jpg' },
+  { id: 24, titulo: 'El mejor día',                archivo: 'foto24.jpg' },
+  { id: 25, titulo: 'Felicidad pura',              archivo: 'foto25.jpg' },
+  { id: 26, titulo: 'Solo nosotros',               archivo: 'foto26.jpg' },
+  { id: 27, titulo: 'Una sonrisa más',             archivo: 'foto27.jpg' },
+  { id: 28, titulo: 'Nuestro mundo',               archivo: 'foto28.jpg' },
+  { id: 29, titulo: 'El momento perfecto',         archivo: 'foto29.jpg' },
+  { id: 30, titulo: 'Te amo',                      archivo: 'foto30.jpg' },
+];
+
+let fotosDesbloqueadas = JSON.parse(localStorage.getItem('fotos') || '[]');
+let fotoNuevaVista = JSON.parse(localStorage.getItem('fotoNuevaVista') || 'true');
+
+function actualizarPuntoFotos() {
+  const punto = document.getElementById('btn-fotos-punto');
+  if (!fotoNuevaVista) {
+    punto.classList.add('show');
+  } else {
+    punto.classList.remove('show');
+  }
+}
+
+function verificarFotos() {
+  const total = logrosDesbloqueados.length;
+  const fotosQueDeberian = Math.floor(total / 5);
+  const fotosActuales = fotosDesbloqueadas.length;
+
+  if (fotosQueDeberian > fotosActuales && fotosQueDeberian <= fotosData.length) {
+    const nuevaFoto = fotosData[fotosActuales];
+    fotosDesbloqueadas.push(nuevaFoto.id);
+    localStorage.setItem('fotos', JSON.stringify(fotosDesbloqueadas));
+    fotoNuevaVista = false;
+    localStorage.setItem('fotoNuevaVista', 'false');
+    actualizarPuntoFotos();
+    mostrarNotifFoto(nuevaFoto.titulo);
+  }
+}
+
+function mostrarNotifFoto(titulo) {
+  document.getElementById('notif-foto-nombre').textContent = titulo;
+  document.getElementById('notif-foto').classList.add('show');
+}
+
+function cerrarNotifFoto() {
+  document.getElementById('notif-foto').classList.remove('show');
+  abrirFotos();
+}
+
+function renderFotos() {
+  const grilla = document.getElementById('fotos-grilla');
+  grilla.innerHTML = '';
+  fotosData.forEach(f => {
+    const desbloqueada = fotosDesbloqueadas.includes(f.id);
+    const item = document.createElement('div');
+    item.className = 'foto-item' + (desbloqueada ? '' : ' bloqueada');
+
+    if (desbloqueada) {
+      item.innerHTML = `
+        <img src="${f.archivo}" alt="${f.titulo}">
+        <div class="foto-item-titulo">${f.titulo}</div>
+      `;
+      item.onclick = () => abrirFotoGrande(f.archivo, f.titulo);
+    } else {
+      item.innerHTML = `
+        <div class="foto-bloqueada-icono">📷</div>
+        <div class="foto-bloqueada-titulo">xxxxxxxxxxx</div>
+      `;
+    }
+    grilla.appendChild(item);
+  });
+}
+
+function abrirFotos() {
+  fotoNuevaVista = true;
+  localStorage.setItem('fotoNuevaVista', 'true');
+  actualizarPuntoFotos();
+  renderFotos();
+  document.getElementById('fotos-overlay').classList.add('show');
+}
+
+function cerrarFotos(e) {
+  if (!e || e.target === document.getElementById('fotos-overlay')) {
+    document.getElementById('fotos-overlay').classList.remove('show');
+  }
+}
+
+function abrirFotoGrande(src, titulo) {
+  document.getElementById('foto-grande-img').src = src;
+  document.getElementById('foto-grande-titulo').textContent = titulo;
+  document.getElementById('foto-grande-overlay').classList.add('show');
+}
+
+function cerrarFotoGrande(e) {
+  if (!e || e.target === document.getElementById('foto-grande-overlay')) {
+    document.getElementById('foto-grande-overlay').classList.remove('show');
+  }
+}
+// ————— FIN FOTOS —————
 
 function findAction(text) {
   const t = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
@@ -830,6 +1223,8 @@ function cerrarPoema(e) {
 document.getElementById('chat-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') handleSend();
 });
+
+actualizarPuntoFotos();
 
 const idle = showOnly('idle');
 idle.loop = true;
