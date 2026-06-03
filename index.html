@@ -329,9 +329,174 @@
   }
 
   .chat-input-row button:hover { opacity: 0.8; }
+
+  .btn-logros {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid #333;
+    color: #666;
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-logros:hover { border-color: #a08060; color: #a08060; }
+
+  .logros-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .logros-overlay.show { display: flex; }
+
+  .logros-panel {
+    background: #161614;
+    border: 1px solid #2a2a26;
+    border-radius: 24px;
+    padding: 1.8rem;
+    max-width: 340px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .logros-panel::-webkit-scrollbar { width: 3px; }
+  .logros-panel::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+  .logros-titulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: #a08060;
+    text-align: center;
+    margin-bottom: 1.2rem;
+  }
+
+  .logros-cerrar {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: transparent;
+    border: none;
+    color: #444;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+
+  .logros-cerrar:hover { color: #f0ede8; }
+
+  .logro-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 0.5px solid #222220;
+  }
+
+  .logro-item:last-child { border-bottom: none; }
+
+  .logro-icono {
+    font-size: 1.4rem;
+    width: 36px;
+    text-align: center;
+    flex-shrink: 0;
+    filter: grayscale(1);
+    opacity: 0.3;
+    transition: all 0.3s;
+  }
+
+  .logro-item.desbloqueado .logro-icono {
+    filter: grayscale(0);
+    opacity: 1;
+  }
+
+  .logro-nombre {
+    font-size: 0.85rem;
+    color: #444;
+    font-family: 'Inter', sans-serif;
+    transition: color 0.3s;
+  }
+
+  .logro-item.desbloqueado .logro-nombre { color: #c8b89a; }
+
+  .logro-desc {
+    font-size: 0.72rem;
+    color: #333;
+    font-family: 'Inter', sans-serif;
+    margin-top: 2px;
+    transition: color 0.3s;
+  }
+
+  .logro-item.desbloqueado .logro-desc { color: #666; }
+
+  .notif-logro {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #161614;
+    border: 1px solid #a08060;
+    border-radius: 16px;
+    padding: 10px 20px;
+    text-align: center;
+    z-index: 300;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    min-width: 200px;
+  }
+
+  .notif-logro.show { opacity: 1; }
+
+  .notif-logro-titulo {
+    font-size: 0.65rem;
+    color: #a08060;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .notif-logro-nombre {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: #f0ede8;
+  }
 </style>
 </head>
 <body>
+
+<button class="btn-logros" onclick="abrirLogros()">🏆</button>
+
+<div class="logros-overlay" id="logros-overlay" onclick="cerrarLogros(event)">
+  <div class="logros-panel" id="logros-panel">
+    <button class="logros-cerrar" onclick="cerrarLogros()">✕</button>
+    <p class="logros-titulo">Logros</p>
+    <div id="logros-lista"></div>
+  </div>
+</div>
+
+<div class="notif-logro" id="notif-logro">
+  <div class="notif-logro-titulo">logro desbloqueado</div>
+  <div class="notif-logro-nombre" id="notif-logro-nombre"></div>
+</div>
 
 <button class="btn-oculto" onclick="abrirPoema()">.</button>
 
@@ -376,18 +541,19 @@
     <source src="meme1.mp4" type="video/mp4">
   </video>
   <video id="vid-meme2" playsinline>
-  <source src="meme2.mp4" type="video/mp4">
-</video>
-<video id="vid-meme3" playsinline>
-  <source src="meme3.mp4" type="video/mp4">
-</video>
+    <source src="meme2.mp4" type="video/mp4">
+  </video>
+  <video id="vid-meme3" playsinline>
+    <source src="meme3.mp4" type="video/mp4">
+  </video>
+
   <div class="action-label" id="action-label"></div>
 </div>
 
 <div class="chat-box">
   <div class="chat-header">
     <div class="chat-header-dot"></div>
-    <p>dile a Facu que haga algo </p>
+    <p>dile a Facu que haga algo 👀</p>
   </div>
 
   <div class="suggestions">
@@ -406,23 +572,26 @@
 </div>
 
 <script>
+let unknownIdx = 0;
+let busy = false;
+
 const actions = [
   {
     id: 'bailar',
     keywords: ['bail','dance','pista','mov','ritmo','cumbia','musica','música'],
-    label: ' bailando...',
+    label: '🕺 bailando...',
     reply: '¡A mover el esqueleto!'
   },
- {
-  id:'ejercicio',
-  keywords:['exercise','ejercicio','ejericios','ejercitar','ejercitando','flexiones','flexion','ejercite','ejercitate'],
-  label:'bombeando esos musculos',
-  reply:'si no duele no sirve'
- },
+  {
+    id: 'ejercicio',
+    keywords: ['exercise','ejercicio','ejericios','ejercitar','ejercitando','flexiones','flexion','ejercite','ejercitate'],
+    label: '💪 bombeando esos músculos...',
+    reply: '¡Si no duele no sirve!'
+  },
   {
     id: 'cantar',
     keywords: ['cant','sing','song','cancion','canción','voz','tema','serenata'],
-    label: 'cantando...',
+    label: '🎤 cantando...',
     reply: '¡Do re mi fa sol la si!'
   },
   {
@@ -434,19 +603,97 @@ const actions = [
   {
     id: 'beso',
     keywords: ['beso','kiss','mwah','amor','corazon','corazón','love','pico'],
-    label: ' tirando un beso...',
+    label: '😘 tirando un beso...',
     reply: '¡Muak! Con todo mi amor 💕'
   }
 ];
 
 const unknownReplies = [
   '¿cómo? dilo de otra forma',
-  ' eso aun no lo puedo hacer ',
-  'No entendí bien... ¿me lo pedís de otra forma? ','prueba a pedirlo de otra forma'
+  'eso aun no lo puedo hacer',
+  'No entendí bien... ¿me lo pedís de otra forma?',
+  'prueba a pedirlo de otra forma'
 ];
 
-let unknownIdx = 0;
-let busy = false;
+const memes = ['meme1', 'meme2', 'meme3'];
+let ultimoMeme = null;
+
+function memeAleatorio() {
+  const disponibles = memes.filter(m => m !== ultimoMeme);
+  const elegido = disponibles[Math.floor(Math.random() * disponibles.length)];
+  ultimoMeme = elegido;
+  return elegido;
+}
+
+const memeKeywords = [
+  'meme', 'memes', 'memeo', 'memear',
+  'gracioso', 'graciosa', 'graciosos', 'graciosas',
+  'divertido', 'divertida', 'divertidos', 'divertidas', 'divertite',
+  'reir', 'reirse', 'reis', 'rei', 'reia', 'riete', 'ríete', 'reite',
+  'risa', 'risas', 'carcajada', 'carcajadas',
+  'jaja', 'jajaja', 'jajajaja', 'jeje', 'jajeje', 'ajaja',
+  'lol', 'lmao', 'haha', 'hehe',
+  'chiste', 'chistes', 'chistoso', 'chistosa',
+  'humor', 'humoristico', 'comico', 'comica',
+  'payasada', 'payasadas', 'payaso',
+  'algo gracioso', 'hazme reir', 'haceme reir',
+  'quiero reir', 'quiero reirme', 'mostrame algo',
+  'entretenido', 'entreteneme', 'aburrida', 'aburri'
+];
+
+// ————— LOGROS —————
+const logrosData = [
+  { id: 'bailar',     icono: '🕺', nombre: 'Primera orden',           desc: 'Pidió bailar por primera vez' },
+  { id: 'cantar',     icono: '🎤', nombre: 'Serenata',                desc: 'Pidió cantar por primera vez' },
+  { id: 'reverencia', icono: '🫡', nombre: 'Mi señora',               desc: 'Pidió una reverencia por primera vez' },
+  { id: 'beso',       icono: '😘', nombre: 'Besito',                  desc: 'Pidió un beso por primera vez' },
+  { id: 'ejercicio',  icono: '💪', nombre: 'Sin dolor no hay gloria', desc: 'Pidió ejercicio por primera vez' },
+  { id: 'meme',       icono: '😂', nombre: 'Meme desbloqueado',       desc: 'Pidió un meme por primera vez' },
+];
+
+let logrosDesbloqueados = JSON.parse(localStorage.getItem('logros') || '[]');
+
+function renderLogros() {
+  const lista = document.getElementById('logros-lista');
+  lista.innerHTML = '';
+  logrosData.forEach(l => {
+    const desbloqueado = logrosDesbloqueados.includes(l.id);
+    const item = document.createElement('div');
+    item.className = 'logro-item' + (desbloqueado ? ' desbloqueado' : '');
+    item.innerHTML = `
+      <div class="logro-icono">${l.icono}</div>
+      <div>
+        <div class="logro-nombre">${l.nombre}</div>
+        <div class="logro-desc">${desbloqueado ? l.desc : '???'}</div>
+      </div>
+    `;
+    lista.appendChild(item);
+  });
+}
+
+function desbloquearLogro(id) {
+  if (logrosDesbloqueados.includes(id)) return;
+  logrosDesbloqueados.push(id);
+  localStorage.setItem('logros', JSON.stringify(logrosDesbloqueados));
+  const logro = logrosData.find(l => l.id === id);
+  if (!logro) return;
+  const notif = document.getElementById('notif-logro');
+  document.getElementById('notif-logro-nombre').textContent = logro.icono + ' ' + logro.nombre;
+  notif.classList.add('show');
+  setTimeout(() => notif.classList.remove('show'), 3000);
+}
+
+function abrirLogros() {
+  renderLogros();
+  document.getElementById('logros-overlay').classList.add('show');
+}
+
+function cerrarLogros(e) {
+  if (!e || e.target === document.getElementById('logros-overlay')) {
+    document.getElementById('logros-overlay').classList.remove('show');
+  }
+}
+// ————— FIN LOGROS —————
 
 function findAction(text) {
   const t = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
@@ -524,32 +771,6 @@ function notificarWhatsapp(texto) {
   fetch(`https://api.callmebot.com/whatsapp.php?phone=${NUMERO}&text=${mensaje}&apikey=${APIKEY}`).catch(() => {});
 }
 
-const memes = ['meme1', 'meme2', 'meme3'];
-let ultimoMeme = null;
-
-function memeAleatorio() {
-  const disponibles = memes.filter(m => m !== ultimoMeme);
-  const elegido = disponibles[Math.floor(Math.random() * disponibles.length)];
-  ultimoMeme = elegido;
-  return elegido;
-}
-const memeKeywords = [
-  'meme', 'memes', 'memeo', 'memear',
-  'gracioso', 'graciosa', 'graciosos', 'graciosas',
-  'divertido', 'divertida', 'divertidos', 'divertidas', 'divertite',
-  'reir', 'reirse', ' reis', 'rei', 'reia', 'riete', 'ríete', 'reite',
-  'risa', 'risas', 'carcajada', 'carcajadas',
-  'jaja', 'jajaja', 'jajajaja', 'jeje', 'jajeje', 'ajaja',
-  'lol', 'lmao', 'haha', 'hehe',
-  'chiste', 'chistes', 'chistoso', 'chistosa',
-  'humor', 'humoristico', 'comico', 'comica',
-  'payasada', 'payasadas', 'payaso',
-  'algo gracioso', 'hazme reir', 'haceme reir',
-  'quiero reir', 'quiero reírme', 'mostrame algo',
-  'entretenido', 'entreteneme', 'aburrida', 'aburri'
-];
-
- 
 function handleSend() {
   if (busy) return;
   const input = document.getElementById('chat-input');
@@ -561,16 +782,17 @@ function handleSend() {
   setTimeout(() => {
     const t = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
     const esMeme = memeKeywords.some(k => t.includes(k));
-
     if (esMeme) {
       const id = memeAleatorio();
-      addMsg('a ver si te da risa ', 'facu');
-      playSequence({ id, label: ' meme incoming...' });
+      addMsg('¡Ahí va un meme! 😂', 'facu');
+      playSequence({ id, label: '😂 meme incoming...' });
+      desbloquearLogro('meme');
     } else {
       const action = findAction(text);
       if (action) {
         addMsg(action.reply, 'facu');
         playSequence(action);
+        desbloquearLogro(action.id);
       } else {
         addMsg(unknownReplies[unknownIdx % unknownReplies.length], 'facu');
         unknownIdx++;
