@@ -524,8 +524,15 @@ function notificarWhatsapp(texto) {
   fetch(`https://api.callmebot.com/whatsapp.php?phone=${NUMERO}&text=${mensaje}&apikey=${APIKEY}`).catch(() => {});
 }
 
- 
 const memes = ['meme1', 'meme2', 'meme3'];
+let ultimoMeme = null;
+
+function memeAleatorio() {
+  const disponibles = memes.filter(m => m !== ultimoMeme);
+  const elegido = disponibles[Math.floor(Math.random() * disponibles.length)];
+  ultimoMeme = elegido;
+  return elegido;
+}
 const memeKeywords = [
   'meme', 'memes', 'memeo', 'memear',
   'gracioso', 'graciosa', 'graciosos', 'graciosas',
@@ -556,7 +563,7 @@ function handleSend() {
     const esMeme = memeKeywords.some(k => t.includes(k));
 
     if (esMeme) {
-      const id = memes[Math.floor(Math.random() * memes.length)];
+      const id = memeAleatorio();
       addMsg('¡Ahí va un meme! ', 'facu');
       playSequence({ id, label: ' meme incoming...' });
     } else {
