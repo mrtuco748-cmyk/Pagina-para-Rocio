@@ -1154,10 +1154,13 @@ function setLabel(text) {
 function playOnce(id, label) {
   return new Promise(resolve => {
     const vid = showOnly(id);
-    if (!vid) { resolve(); return; }
     setLabel(label);
-    vid.play().catch(() => {});
-    vid.onended = () => { vid.onended = null; resolve(); };
+    if (vid) {
+      vid.play().catch(() => {});
+      vid.onended = () => { vid.onended = null; resolve(); };
+    } else {
+      resolve();
+    }
   });
 }
 
@@ -1171,7 +1174,7 @@ async function playSequence(actionId, label) {
   setLabel('');
   if (idle) {
     idle.loop = true;
-    idle.muted = true; // 👈 Agregamos esto para asegurar que el navegador no bloquee el regreso al idle
+    idle.muted = true;
     idle.play().catch(() => {});
   }
   busy = false;
@@ -1233,8 +1236,38 @@ function cerrarPoema(e) {
   }
 }
 
-// Inicialización de estados visuales al cargar la página
+// ————— ARRANCAR EL JUEGO AL CARGAR —————
 actualizarPuntoFotos();
+
+// Forzamos que el video idle intente arrancar de fondo sin romper el placeholder visual inicial
+window.addEventListener('DOMContentLoaded', () => {
+  const idle = document.getElementById('vid-idle');
+  if (idle) {
+    idle.loop = true;
+    idle.muted = true;
+    
+    // Función mágica que despierta al Facu quieto al primer toque
+    const despertarFacu = () => {
+      if (!busy) {
+        document.getElementById('placeholder').style.display = 'none';
+        idle.classList.add('active');
+        idle.play().catch(() => {});
+      }
+      document.removeEventListener('click', despertarFacu);
+      document.removeEventListener('touchstart', despertarFacu);
+    };
+
+    // Intentar reproducir directo (si el navegador deja)
+    idle.play().then(() => {
+      document.getElementById('placeholder').style.display = 'none';
+      idle.classList.add('active');
+    }).catch(() => {
+      // Si el navegador lo frena, se queda el cartel "esperando orden" y arranca al primer toque
+      document.addEventListener('click', despertarFacu);
+      document.addEventListener('touchstart', despertarFacu);
+    });
+  }
+});
 </script>
 </body>
 </html>
